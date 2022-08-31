@@ -5,6 +5,7 @@ import by.arsy.game.GameWindow;
 import by.arsy.game.TennisRunner;
 
 import static by.arsy.game.TennisRunner.getBall;
+import static by.arsy.game.TennisRunner.getWalls;
 
 public class Ball extends GameObject {
 
@@ -56,8 +57,8 @@ public class Ball extends GameObject {
             Boolean isSpaceHorizontal = isSpaceInit(frontPositionY, positionX);
             Boolean isSpaceDiagonal = null;
 
-            if(isSpaceVertical != null && isSpaceHorizontal != null) {
-                if(isSpaceVertical && isSpaceHorizontal) {
+            if (isSpaceVertical != null && isSpaceHorizontal != null) {
+                if (isSpaceVertical && isSpaceHorizontal) {
                     isSpaceDiagonal = isSpaceInit(frontPositionY, frontPositionX);
                 }
             } else {
@@ -133,10 +134,7 @@ public class Ball extends GameObject {
         synchronized (GameWindow.class) {
             try {
                 int labelPosition = TennisRunner.countGameObjectLabelPosition(positionY, positionX);
-                String labelView = GameWindow.getLabelsElement(labelPosition).getText();
-                deleteWall(labelPosition, labelView);
-
-                return labelView.equals(TennisRunner.getSpiceVisible());
+                return !isWall(labelPosition) && !isGamer(labelPosition);
             } catch (IndexOutOfBoundsException e) {
                 TennisRunner.setGamed(false);
                 return null;
@@ -145,25 +143,46 @@ public class Ball extends GameObject {
     }
 
     private void checkGamed() {
-        if(getBall().getPositionY() == TennisRunner.getGamer1().positionY
-           || getBall().getPositionY() == TennisRunner.getGamer2().positionY)
-        {
+        if (getBall().getPositionY() == TennisRunner.getGamer1().positionY
+            || getBall().getPositionY() == TennisRunner.getGamer2().positionY) {
             TennisRunner.setGamed(false);
         }
     }
 
-    private void deleteWall(int labelPosition, String labelView) {
-        if (labelView.equals(TennisRunner.getWallVisible())) {
-            for (int q = 0; q < TennisRunner.getWalls().size(); q++) {
-                if (TennisRunner.getWalls().get(q).getPlacePosition() == labelPosition) {
-                    synchronized (TennisRunner.getWalls()) {
-                        TennisRunner.getWalls().remove(TennisRunner.getWalls().get(q));
-                        TennisRunner.upCountCoins(10);
-                    }
+
+    private boolean isWall(int labelPosition) {
+        synchronized (getWalls()) {
+        for (int q = 0; q < TennisRunner.getWalls().size(); q++) {
+            if (TennisRunner.getWalls().get(q) != null &&
+                    TennisRunner.getWalls().get(q).getPlacePosition() == labelPosition) {
+                //delete if is the wall
+                    TennisRunner.getWalls().remove(q);
+                    TennisRunner.upCountCoins(10);
+                    return true;
                 }
             }
         }
+        return false;
     }
+
+    private boolean isGamer(int labelPosition) {
+        int positionYg1 = TennisRunner.getGamer1().getPositionY();
+        int positionXg1 = TennisRunner.getGamer1().getPositionX();
+        int gamerPosition1 = TennisRunner.countGameObjectLabelPosition(positionYg1, positionXg1);
+
+        int positionYg2 = TennisRunner.getGamer2().getPositionY();
+        int positionXg2 = TennisRunner.getGamer2().getPositionX();
+        int gamerPosition2 = TennisRunner.countGameObjectLabelPosition(positionYg2, positionXg2);
+
+        for (int i = 0; i < XMLAdapter.getStartSizeGamers(); i++) {
+            if ((gamerPosition1 + i) == labelPosition ||
+                (gamerPosition2 + i) == labelPosition) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     public long getPauseForStepBall() {
         return pauseForStepBall;

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><options id="1">
 
-    <tennis_runner ball_visible="⚾" coin_visible="$" gamer_visible="&#127934;" spice_visible=" " start_size_gamers="4" wall_visible="⬛"/>
+    <tennis_runner ball_visible="⚾" coin_visible="$" gamer_visible="&#127934;" spice_visible=" " start_size_gamers="11" wall_visible="⬛"/>
 
     <window_size cols="11" rows="19"/>
 
     <control_button_codes gamer1left="37" gamer1right="39" gamer2left="65" gamer2right="68"/>
 
-    <ball bust_speed="50" step_pause="500" timer_speed_up="20000"/>
+    <ball bust_speed="50" step_pause="100" timer_speed_up="200"/>
 
-    <walls bust_amount="5" pause_build="20000"/>
+    <walls bust_amount="7" pause_build="20"/>
 
 </options>

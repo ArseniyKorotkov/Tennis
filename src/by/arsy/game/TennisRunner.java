@@ -27,7 +27,7 @@ public class TennisRunner {
     private static Gamer gamer1;
     private static Gamer gamer2;
     private static Ball ball;
-    private static ArrayList<Wall> walls;
+    private volatile static ArrayList<Wall> walls;
     private static boolean gamed = true;
     private static boolean pause = false;
 
@@ -74,7 +74,7 @@ public class TennisRunner {
             }
 
             try {
-                Thread.sleep(20);
+                Thread.sleep(10);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -103,7 +103,7 @@ public class TennisRunner {
     }
 
     private static void wallsVisible() {
-        synchronized (Collections.unmodifiableList(walls)) {
+        synchronized (getWalls()) {
             for (Wall wall : walls) {
                 GameWindow.getLabelsElement(wall.getPlacePosition()).setText(WALL_VISIBLE);
             }
@@ -123,7 +123,7 @@ public class TennisRunner {
         }
         GameWindow.getLabelsElement(GameWindow.getCOLS() - (coins.length() + 1)).setText(COIN_VISIBLE);
 
-        String goal = "GOAL";
+        String goal = "BEST";
         for (int q = 0; q < goal.length(); q++) {
             GameWindow.getLabelsElement(countGameObjectLabelPosition(1, q)).setText(String.valueOf(goal.charAt(q)));
         }

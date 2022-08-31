@@ -2,7 +2,9 @@ package by.arsy.game;
 
 import by.arsy.adapters.XMLAdapter;
 import by.arsy.gameObj.Wall;
+
 import java.util.Random;
+
 import static by.arsy.game.TennisRunner.*;
 
 public class CreateWallThread extends Thread {
@@ -16,9 +18,19 @@ public class CreateWallThread extends Thread {
         int variantsForWallPosition = GameWindow.getAllPixels() / 3;
         Random randomPosition = new Random();
 
+        OUT:
         while (isGamed()) {
 
             int wallPosition = variantsForWallPosition + randomPosition.nextInt(variantsForWallPosition);
+
+            synchronized (getWalls()) {
+                for (Wall wall : getWalls()) {
+                    if (wall.getPlacePosition() == wallPosition) {
+                        continue OUT;
+                    }
+                }
+            }
+
 
             try {
                 Thread.sleep(PAUSE_BUILD_WALL_SPEED);
@@ -34,8 +46,10 @@ public class CreateWallThread extends Thread {
                 }
             }
 
-            if(getWalls().size() < GAME_AMOUNT_WALLS) {
-                getWalls().add(new Wall(wallPosition));
+            synchronized (getWalls()) {
+                if (getWalls().size() < GAME_AMOUNT_WALLS) {
+                    getWalls().add(new Wall(wallPosition));
+                }
             }
         }
     }
