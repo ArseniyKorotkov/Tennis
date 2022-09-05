@@ -8,6 +8,6 @@
 
     <ball bust_speed="50" step_pause="500" timer_speed_up="20000"/>
 
-    <walls bust_amount="5" pause_build="2000"/>
+    <walls bust_amount="5" pause_build="20000"/>
 
 </options>
