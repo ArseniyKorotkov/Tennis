@@ -15,7 +15,7 @@ public class JBDCAdapter {
     private JBDCAdapter() {
     }
 
-    public static void updateGoal(int newRecord) {
+    public static void updateBest(int newRecord) {
         String sql = """
                 UPDATE tennis_game
                 SET coins_record = ?
@@ -33,7 +33,7 @@ public class JBDCAdapter {
         }
     }
 
-    public static int getRecord() {
+    public static int getBest() {
         String sql = """
                 SELECT *
                 FROM tennis_game
@@ -71,7 +71,7 @@ public class JBDCAdapter {
         }
     }
 
-    public static int createNewGamer() {
+    public static int createNewGamers() {
         String sql = """
                 INSERT INTO tennis_game(coins_record)
                 VALUES (0)

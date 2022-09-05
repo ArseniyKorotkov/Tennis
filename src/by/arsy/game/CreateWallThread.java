@@ -18,17 +18,13 @@ public class CreateWallThread extends Thread {
         int variantsForWallPosition = GameWindow.getAllPixels() / 3;
         Random randomPosition = new Random();
 
-        OUT:
         while (isGamed()) {
 
-            int wallPosition = variantsForWallPosition + randomPosition.nextInt(variantsForWallPosition);
+            int newWallPosition = variantsForWallPosition + randomPosition.nextInt(variantsForWallPosition);
 
             synchronized (getWalls()) {
-                for (Wall wall : getWalls()) {
-                    if (wall.getPlacePosition() == wallPosition) {
-                        continue OUT;
-                    }
-                }
+                if(getWalls().stream().anyMatch(w -> w.getPlacePosition() == newWallPosition))
+                    continue;
             }
 
 
@@ -48,7 +44,7 @@ public class CreateWallThread extends Thread {
 
             synchronized (getWalls()) {
                 if (getWalls().size() < GAME_AMOUNT_WALLS) {
-                    getWalls().add(new Wall(wallPosition));
+                    getWalls().add(new Wall(newWallPosition));
                 }
             }
         }

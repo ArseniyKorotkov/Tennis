@@ -40,7 +40,7 @@ public class BallThread extends Thread {
             }
         }
         if (TennisRunner.getCountCoins() > TennisRunner.getRecordCoins()) {
-            JBDCAdapter.updateGoal(TennisRunner.getCountCoins());
+            JBDCAdapter.updateBest(TennisRunner.getCountCoins());
         }
         TennisRunner.getBall().setMoved(false);
     }

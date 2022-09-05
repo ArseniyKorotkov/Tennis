@@ -5,7 +5,6 @@ import by.arsy.adapters.XMLAdapter;
 import by.arsy.gameObj.*;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class TennisRunner {
 
@@ -22,7 +21,7 @@ public class TennisRunner {
     private static final String COIN_VISIBLE = XMLAdapter.getCoinVisible();
     private static final int START_SIZE_GAMERS = XMLAdapter.getStartSizeGamers();
     private static int countCoins = 0;
-    private static int recordCoins = JBDCAdapter.getRecord();
+    private static int recordCoins = JBDCAdapter.getBest();
 
     private static Gamer gamer1;
     private static Gamer gamer2;
@@ -86,6 +85,7 @@ public class TennisRunner {
         for (int i = 0; i < GameWindow.getAllPixels(); i++) {
             GameWindow.getLabelsElement(i).setText(SPICE_VISIBLE);
         }
+
     }
 
     private static void gamersVisible(Gamer... gamers) {
@@ -211,14 +211,6 @@ public class TennisRunner {
 
     public static void setGamed(boolean flag) {
         gamed = flag;
-    }
-
-    public static String getSpiceVisible() {
-        return SPICE_VISIBLE;
-    }
-
-    public static String getWallVisible() {
-        return WALL_VISIBLE;
     }
 
     public static void upCountCoins(int plus) {

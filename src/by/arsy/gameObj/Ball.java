@@ -3,6 +3,7 @@ package by.arsy.gameObj;
 import by.arsy.adapters.XMLAdapter;
 import by.arsy.game.GameWindow;
 import by.arsy.game.TennisRunner;
+import java.util.Optional;
 
 import static by.arsy.game.TennisRunner.getBall;
 import static by.arsy.game.TennisRunner.getWalls;
@@ -43,6 +44,7 @@ public class Ball extends GameObject {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
             isBallReadyAction = true;
             int frontPositionY = positionY + (positionY - oldPositionY);
             int frontPositionX = positionX + (positionX - oldPositionX);
@@ -64,7 +66,6 @@ public class Ball extends GameObject {
             } else {
                 break;
             }
-
 
             if (!isSpaceVertical) {
                 invertX();
@@ -152,17 +153,14 @@ public class Ball extends GameObject {
 
     private boolean isWall(int labelPosition) {
         synchronized (getWalls()) {
-        for (int q = 0; q < TennisRunner.getWalls().size(); q++) {
-            if (TennisRunner.getWalls().get(q) != null &&
-                    TennisRunner.getWalls().get(q).getPlacePosition() == labelPosition) {
-                //delete if is the wall
-                    TennisRunner.getWalls().remove(q);
-                    TennisRunner.upCountCoins(10);
-                    return true;
-                }
-            }
+            Optional<Wall> first = getWalls().stream()
+                    .filter(w -> w.getPlacePosition() == labelPosition)
+                    .findFirst();
+
+            first.ifPresent(w -> getWalls().remove(w));
+            first.ifPresent(w -> TennisRunner.upCountCoins(10));
+            return first.isPresent();
         }
-        return false;
     }
 
     private boolean isGamer(int labelPosition) {

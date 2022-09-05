@@ -74,7 +74,7 @@ public final class XMLAdapter {
         Node item = optionsList.item(0).getAttributes().item(0);
         int id = Integer.parseInt(item.getTextContent());
         if (id == 0) {
-            id = JBDCAdapter.createNewGamer();
+            id = JBDCAdapter.createNewGamers();
             item.setNodeValue(String.valueOf(id));
             try {
                 Transformer transformer = TransformerFactory.newInstance().newTransformer();
