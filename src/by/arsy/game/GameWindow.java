@@ -40,9 +40,7 @@ public class GameWindow extends JFrame implements KeyListener {
         Container container = this.getContentPane();
         container.setLayout(new GridLayout(ROWS, COLS, 2, 2));
 
-        for (int i = 0; i < ALL_PIXELS; i++) {
-            container.add(LABELS.get(i));
-        }
+        LABELS.forEach(container::add);
     }
 
     @Override

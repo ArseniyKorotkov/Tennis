@@ -73,7 +73,7 @@ public class TennisRunner {
             }
 
             try {
-                Thread.sleep(10);
+                Thread.sleep(50);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -104,9 +104,7 @@ public class TennisRunner {
 
     private static void wallsVisible() {
         synchronized (getWalls()) {
-            for (Wall wall : walls) {
-                GameWindow.getLabelsElement(wall.getPlacePosition()).setText(WALL_VISIBLE);
-            }
+            walls.forEach(w -> GameWindow.getLabelsElement(w.getPlacePosition()).setText(WALL_VISIBLE));
         }
     }
 
